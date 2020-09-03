@@ -11,6 +11,11 @@ let users = [
         name: 'Jane Doe',
         bio: "Not Tarzan's wife "
     },
+    {
+        id: shortid.generate(),
+        name: 'Jenni Vest',
+        bio: 'Not Jenni Espy'
+    },
 ];
 
 server.listen(5000, () => {
@@ -53,8 +58,6 @@ server.get('/api/users/:id', (req, res) => {
 
     if (found) {
         res.status(200).json(found)
-    } else if (!users.id) {
-        res.status(500).json({ message: 'The user information could not be retrieved.' })
     } else {
         res.status(404).json({ message: 'The user with the specified ID does not exist.' });
     }
@@ -68,9 +71,22 @@ server.delete('/api/users/:id', (req, res) => {
     if (deleted) {
         users = users.filter(user => user.id !== id);
         res.status(200).json(deleted)
-    } else if (!deleted) {
-        res.status(500).json({ message: 'The user could not be removed' })
     } else {
         res.status(404).json({ message: 'The user with the specified ID does not exist.' });
+    }
+})
+
+server.put('/api/users/:id', (req, res) => {
+    const { id } = req.params;
+    const changes = req.body;
+    changes.id = id;
+
+    let index = users.findIndex(user => user.id === id);
+
+    if (index !== -1) {
+        users[index] = changes;
+        res.status(200).json(users[index]);
+    } else {
+        res.status(500).json({ message: 'The user information could not be modified.' })
     }
 })
