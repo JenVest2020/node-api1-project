@@ -53,7 +53,7 @@ server.get('/api/users', (req, res) => {
 });
 
 server.get('/api/users/:id', (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params.id;
     const found = users.find(user => users.id === id);
 
     if (found) {
@@ -65,7 +65,7 @@ server.get('/api/users/:id', (req, res) => {
 
 
 server.delete('/api/users/:id', (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params.id;
     const deleted = users.find(user => users.id === id);
 
     if (deleted) {
@@ -77,7 +77,7 @@ server.delete('/api/users/:id', (req, res) => {
 })
 
 server.put('/api/users/:id', (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params.id;
     const changes = req.body;
     changes.id = id;
 
